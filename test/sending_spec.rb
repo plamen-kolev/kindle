@@ -1,8 +1,13 @@
+require '../lib/send'
+
 RSpec.describe "checkout", :type => :request do
   ENV["ENVIRONMENT"] = 'test'
   # show checkout with norwegian url
   it "raises on empty configuration" do
-
+    
+    expect { 
+      smtp("tmp/sample.html", false)
+    }.to raise_error ArgumentError, "Misconfigured application, missing configuration"
   end
 
   it "raises on missing arguments in configuration" do

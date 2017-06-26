@@ -7,6 +7,7 @@ require 'dotenv/load'
 require 'net/smtp'
 require 'mailfactory'
 require 'open-uri'
+require './lib/send'
 
 # check if ebook-convert is on the path
 # notify the user that the kindle email must be whitelisted
@@ -36,56 +37,4 @@ command :send do |c|
   end
 end
 
-def smtp(article, must_download=true)
-  _load_env()
-  _validate()
-  local_path = ''
-  if must_download
-    local_path = 'tmp/article.html'
-    File.open("tmp/article.html", "wb") do |file|
-      # the following "open" is provided by open-uri
-      open(article, "rb") do |read_file|
-        file.write(read_file.read)
-      end
-    end
-  else
-    local_path = article
-  end
 
-  # check if file exists
-  
-  # convert format to mobi
-  system("ebook-convert #{local_path} tmp/article.mobi 2>&1")
-
-  Net::SMTP.start(
-    ENV['SMTP_SERVER'],
-    ENV['SMTP_PORT'],
-    ENV['SMTP_DOMAIN'],
-    ENV['SMTP_USERNAME'],
-    ENV['SMTP_PASSWORD'],
-    :login
-  ) do |smtp|
-    mail = MailFactory.new()
-    mail.to = ENV['SMTP_RECIPIENT']
-    mail.from = ENV['SMTP_USERNAME']
-    mail.subject = "Sending some kindle resources"
-    mail.text = "Reading materials are attached to this email"
-    mail.html = "<p>Reading materials are attached to this email</p>"
-    mail.attach("tmp/article.mobi")
-    smtp.send_message mail.to_s, ENV['SMTP_USERNAME'], ENV['SMTP_RECIPIENT']
-  end
-end
-
-def _validate
-  # check env file exists
-  # check all env vars are there
-  # check if the mail server works
-end
-
-def _load_env()
-  if ENV['ENVIRONMENT'] == 'test'
-    Dotenv.load('.test.env', '.version')
-  else
-    Dotenv.load('.env', '.version')
-  end
-end
