@@ -1,0 +1,40 @@
+<root>
+    <smtp>
+        <item   
+            name="SMTP_SERVER" 
+            error="SMTP Server must be defined"
+            value="" 
+            description="The url of the server, for example smtp.gmail.com or smtp.gmx.com"
+        />
+        <item 
+            name="SMTP_PORT" 
+            value=""
+            error="SMTP Server port must be defined"
+            description="The port on which the smtp will establish connection to the server (default 25)"
+        />
+        <item 
+            name="SMTP_DOMAIN" 
+            value="" 
+            error="SMTP Server domain must be defined"
+            description="The domain of the smtp server, for example the domain of smtp.gmail.com is gmail.com"
+        />
+        <item 
+            name="SMTP_USERNAME" 
+            value=""
+            error="The user for the SMTP account must be specified"
+            description="The username of the account from which emails will be sent"
+        />
+        <item 
+            name="SMTP_PASSWORD"
+            error="The password for the SMTP account must be specified"
+            value="" 
+            description="The password of the account from which emails will be sent"
+        />
+        <item 
+            name="SMTP_RECIPIENT" 
+            error="The kindle email recipient must be specified"
+            value="" 
+            description="The kindle email which will receive articles"
+        />
+    </smtp>
+</root>
